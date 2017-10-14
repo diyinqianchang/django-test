@@ -1,1 +1,1 @@
-#coding:UTF-8from django.conf.urls import urlfrom .views import *urlpatterns=[    url(r'^as/$',index),    url(r'^as/book/(\d+)$',bookshow)]
+#coding:UTF-8from django.conf.urls import urlfrom .views import *#name 用于反向解析urlpatterns=[    url(r'^as/$',index,name='index'),    url(r'^as/book/(\d+)$',bookshow,name='bookshow'),    url(r'^(?P<year>\d+)/(?P<mon>\d+)/(?P<day>\d+)/',test,name='test'),    url(r'^testget/$',testget),    url(r'^cookieTest/$',cookieTest),]

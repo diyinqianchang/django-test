@@ -2,7 +2,7 @@ from django.shortcuts import render
 from django.http import *
 from django.template import RequestContext,loader
 from .models import *
-
+from . import signals
 # Create your views here.
 
 
@@ -20,3 +20,36 @@ def bookshow(request,bid):
     herolist = book.heroinfo_set.all()
     context = {'title': '学习', 'con': 'hello', 'book': book,'herolist':herolist}
     return render(request, 'booktest/show.html', context=context)
+
+#路勁參數形式
+def test(request,year,mon,day):
+
+    b = BookInfo.books.get(pk=1)
+    b.bread= 30
+    b.save()
+
+    return HttpResponse('year:%s,mon:%s,day:%s'%(year,mon,day))
+
+
+def testget(request):
+    # a = request.GET.get('a','ninide') #可以有個默認值
+    # a = request.GET.getlist('a')        #一键多值
+    signals.signalAllen.send(sender='signal',allen='test') #信号发动
+    concrete_model = BookInfo._meta.concrete_model
+    blist = BookInfo.books.values('btitle','bread')
+    list1 = []
+    for b in blist:
+        list1.append(b)
+        # for field in concrete_model._meta.local_fields:
+        #     print(field.value_from_object(b))
+
+    return JsonResponse({'list':list1})
+
+
+def cookieTest(request):
+    cookie = request.COOKIES
+    response = HttpResponse()
+    if 'ti' in cookie.keys():
+        response.write(cookie['ti'])
+    # resopnse.set_cookie('ti','abc')
+    return response

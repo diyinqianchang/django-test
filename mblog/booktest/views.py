@@ -3,6 +3,10 @@ from django.http import *
 from django.template import RequestContext,loader
 from .models import *
 from . import signals
+from django.conf import settings
+from django.core.paginator import Paginator
+from django.views.decorators.cache import cache_page
+from django.core.cache import cache
 # Create your views here.
 
 
@@ -53,3 +57,40 @@ def cookieTest(request):
         response.write(cookie['ti'])
     # resopnse.set_cookie('ti','abc')
     return response
+
+def uploadPic(request):
+    return render(request,'booktest/uploadPic.html')
+
+def uploadHandle(request):
+
+    if request.method == "POST":
+        f = request.FILES['pic1']
+        fname = '%s/%s'%(settings.MEDIA_ROOT,f.name)
+        with open(fname,'wb') as pic:
+            for c in f.chunks():
+                pic.write(c)
+        return HttpResponse(fname)
+    else:
+        return HttpResponse("error")
+
+
+def pagetest(request,pindex='1'):
+
+    list = HeroInfo.objects.all()
+    paginator = Paginator(list,5)
+    if pindex=='':
+        pindex = '1'
+    pindex = int(pindex)
+    page = paginator.page(pindex)
+    context = {'page':page}
+    return render(request,'booktest/herolist.html',context=context)
+
+
+# @cache_page(60)  #缓存一个视图
+def cachel(request):
+    cache.set('key1','value1',60)
+    return render(request,'booktest/cache.html')
+    # return HttpResponse('hello3')
+
+def mysearch(request):
+    return render(request,'booktest/mysearch.html')

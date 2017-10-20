@@ -1,0 +1,1 @@
+#coding:UTF-8import timefrom celery import task@taskdef show():    print("Hello...")    time.sleep(5)    print("Wrold")

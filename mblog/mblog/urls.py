@@ -15,10 +15,13 @@ Including another URLconf
 """
 from django.conf.urls import url,include
 from django.contrib import admin
+
 # from booktest import views
 
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
     # url(r'^index/$',views.index),
-    url(r'^index/',include('booktest.urls',namespace='booktest'))
+    url(r'^index/',include('booktest.urls',namespace='booktest')),
+    url(r'^search/',include('haystack.urls')),
+
 ]

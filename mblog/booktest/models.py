@@ -14,8 +14,8 @@ class BookInfo(models.Model):
     bread = models.IntegerField(default=0)
     bcomment = models.IntegerField(null=False)
     isDelete = models.BooleanField(default=False)
-    books1 = models.Manager()
-    books = BookInfoManager()
+    # books1 = models.Manager()
+    # books = BookInfoManager()
     class Meta:
         ordering = ['id']
         verbose_name = '武侠小说'
